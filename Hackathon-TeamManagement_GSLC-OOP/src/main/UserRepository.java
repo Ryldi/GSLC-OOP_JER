@@ -17,12 +17,49 @@ public class UserRepository implements Repository{
 		this.userList = result;
 		return;
 	}
-
-	@Override
-	public Model findOne() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public void getDataUser(Connection conn) {
+		ArrayList<String> userCSV = new ArrayList<String>();
+		userCSV = conn.readFile("User");
+		stringToObject(userCSV);
 	}
+	
+	public Boolean validate(String col, String[] condition, Boolean join, String tableJoin, Connection conn){
+        // hubungan antara col dengan conditon
+        if(col == null && condition != null) return false;
+        if(col != null && condition == null) return false;
+        if( (col.equals("NIM") || col.equals("Name") || col.equals("ID Team")) == false)return false;
+
+        // untuk condition jika ada
+        if(condition != null && condition.length !=2)return false;
+        if(condition != null && condition[0] == null || condition[1] == null)return false;
+        if(condition != null && condition[0] == null || condition[1] == null)return false;
+
+        // join
+        if(join == false && tableJoin != null)return false;
+        if(join == true && tableJoin == null)return false;
+        if(join == true && tableJoin.equals("Team") == false)return false;
+
+        if(conn == null)return false;
+
+        return true;
+    }
+
+    public void find(String col, String[] condition, Boolean join, String tableJoin, Connection conn) {
+        if(validate(col, condition, join, tableJoin, conn).equals(false))return;
+
+        return;
+    }
+
+	public void findOne(String col, String[] condition, Boolean join, String tableJoin, Connection conn) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+
+
+
 
 
 }

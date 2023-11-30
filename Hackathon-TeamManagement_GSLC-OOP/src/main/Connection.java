@@ -47,7 +47,7 @@ public class Connection {
 		
 		ArrayList<String> rawData = new ArrayList<String>();
 		
-		if(option.equals("user")) {
+		if(option.equals("User")) {
 			try (BufferedReader reader = new BufferedReader(new FileReader("user.csv"))) {
 	            String line;
 	            while ((line = reader.readLine()) != null) {

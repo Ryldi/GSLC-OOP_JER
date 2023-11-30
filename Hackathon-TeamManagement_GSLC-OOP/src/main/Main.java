@@ -10,7 +10,14 @@ public class Main {
 	}
 	
 	public Main() {
-		mainMenu();
+//		mainMenu();
+		
+		Connection conn = new Connection();
+		TeamRepository teamRepo = new TeamRepository();
+		String[] pass = new String[]{"=", "Venti"};
+		
+		teamRepo.find("Nama", pass , false, null, conn);
+		
 	}
 	
 	public void mainMenu() {
