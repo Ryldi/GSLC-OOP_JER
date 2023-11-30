@@ -19,10 +19,10 @@ public class TeamRepository implements Repository{
 	
 	public ArrayList<Team> modelToTeam(ArrayList<String> dataTeam){
 		
-		ArrayList<Model> modelUser = this.stringToObject(dataTeam);
+		ArrayList<Model> modelTeam = this.stringToObject(dataTeam);
 		ArrayList<Team> teamList = new ArrayList<Team>();
 		
-		for (Model model : modelUser) {
+		for (Model model : modelTeam) {
 			teamList.add((Team)model);
 		}
 		
