@@ -49,6 +49,12 @@ public class Connection {
 		
 		if(option.equals("User")) {
 			try (BufferedReader reader = new BufferedReader(new FileReader("user.csv"))) {
+				//-------------------------------------
+				String headerLine = reader.readLine();
+				//ngambil header di file csv
+				//https://stackoverflow.com/questions/18306270/skip-first-line-while-reading-csv-file-in-java
+				//-------------------------------------
+				
 	            String line;
 	            while ((line = reader.readLine()) != null) {
 	                rawData.add(line);
@@ -57,7 +63,13 @@ public class Connection {
 	        	System.out.println("kosong");
 	        }
 		}else if(option.equals("Team")) {
-			try (BufferedReader reader = new BufferedReader(new FileReader("team.csv"))) {
+			try (BufferedReader reader = new BufferedReader(new FileReader("teams.csv"))) {
+				//-------------------------------------
+				String headerLine = reader.readLine();
+				//ngambil header di file csv
+				//https://stackoverflow.com/questions/18306270/skip-first-line-while-reading-csv-file-in-java
+				//-------------------------------------
+				
 	            String line;
 	            while ((line = reader.readLine()) != null) {
 	                rawData.add(line);
@@ -67,7 +79,9 @@ public class Connection {
 	        }
 		}
 		
-		
+//		for (String string : rawData) {
+//			System.out.println(string);
+//		}
 		return rawData;
 	}
 

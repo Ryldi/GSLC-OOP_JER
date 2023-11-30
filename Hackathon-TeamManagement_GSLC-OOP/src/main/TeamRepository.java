@@ -13,6 +13,7 @@ public class TeamRepository implements Repository{
 		for (String team : dataTeam) {
 			String[] splitData = team.split(",");
 			result.add(new Team(Integer.parseInt(splitData[0]), splitData[1]));
+//			System.out.println(splitData[0]+ splitData[1]);
 		}
 		
 		this.teamList = result;
@@ -34,24 +35,25 @@ public class TeamRepository implements Repository{
 	
 	public ArrayList<Team> filterTeam(String col, String[] condition){
 		ArrayList<Team> answer = new ArrayList<Team>();
-		for (int i = 0; i < teamList.size(); i++){
-			Team teamNow = teamList.get(i);
+		
+		for (Team team : this.teamList) {
 			int sign = getSign(condition);
 			String requiredValue = condition[1];
 			if(col.equals("Nama")){
-				if(sign == 1 && teamNow.teamName != requiredValue) continue;
-				if(sign == 0 && teamNow.teamName == requiredValue) continue;
-//				answer.push({NULL, teamNow});
-				answer.add(teamNow);
+				if(sign == 1 && !team.teamName.equals(requiredValue)) continue;
+				if(sign == 0 && team.teamName.equals(requiredValue)) continue;
+				answer.add(team);
 			}
 			else if(col.equals("ID")){
-				if(sign == 1 && teamNow.teamID != Integer.parseInt(requiredValue)) continue;
-				if(sign == 0 && teamNow.teamID == Integer.parseInt(requiredValue)) continue;
-//				answer.push({NULL, teamNow});
-				answer.add(teamNow);
+				if(sign == 1 && team.teamID != Integer.parseInt(requiredValue)) continue;
+				if(sign == 0 && team.teamID == Integer.parseInt(requiredValue)) continue;
+				answer.add(team);
 			}
-			System.out.println(teamNow.teamName);
 		}
+//		for (Team team : answer) {
+//			System.out.println(team.teamName);
+//		}
+		
 		return answer;
 	}
 	
@@ -96,6 +98,8 @@ public class TeamRepository implements Repository{
     public void find(String col, String[] condition, Boolean join, String tableJoin, Connection conn) {
         if(validate(col, condition, join, tableJoin, conn).equals(false))return; 
         
+        this.getDataTeam(conn);
+        
         ArrayList<Team> teamAnswer = filterTeam(col, condition);
 		Team team_now = new Team(null, null);
 		if(join == true){
@@ -118,8 +122,8 @@ public class TeamRepository implements Repository{
 			// print
 			for(int i = 0; i < teamAnswer.size(); i++){
 				team_now = teamAnswer.get(i);
-				System.out.println(team_now.teamName);
 				System.out.println(team_now.teamID);
+				System.out.println(team_now.teamName);
 			}
 		}
         return;
