@@ -4,32 +4,23 @@ import java.util.ArrayList;
 
 public class TeamRepository implements Repository{
 	
-	ArrayList<Team> teamList;
+	ArrayList<Team> teamList = new ArrayList<Team>();
 
-	public ArrayList<Model> stringToObject(ArrayList<String> dataTeam) {
-		ArrayList<Model> result = new ArrayList<Model>();
+	public void stringToObject(ArrayList<String> dataTeam) {
+		ArrayList<Team> result = new ArrayList<Team>();
 		
-		for (String user : dataTeam) {
-			String[] splitData = user.split(",");
+		for (String team : dataTeam) {
+			String[] splitData = team.split(",");
 			result.add(new Team(Integer.parseInt(splitData[0]), splitData[1]));
 		}
 		
-		return result;
+		this.teamList = result;
+		return;
 	}
 	
-	public ArrayList<Team> modelToTeam(ArrayList<String> dataTeam){
-		
-		ArrayList<Model> modelTeam = this.stringToObject(dataTeam);
-		ArrayList<Team> teamList = new ArrayList<Team>();
-		
-		for (Model model : modelTeam) {
-			teamList.add((Team)model);
-		}
-		
-		return teamList;
-	}
 
 	public Model find(String col, String condition, Boolean join, String tableJoin, Connection conn) {
+		
 		
 		
 		

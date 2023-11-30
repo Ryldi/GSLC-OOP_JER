@@ -3,36 +3,19 @@ package main;
 import java.util.ArrayList;
 
 public class UserRepository implements Repository{
-	ArrayList<User> userData = new ArrayList<User>();
 	
-	public ArrayList<Model> stringToObject(ArrayList<String> dataUser) {
-		ArrayList<Model> result = new ArrayList<Model>();
+	ArrayList<User> userList = new ArrayList<User>();
+	
+	public void stringToObject(ArrayList<String> dataUser) {
+		ArrayList<User> result = new ArrayList<User>();
 		
 		for (String user : dataUser) {
 			String[] splitData = user.split(",");
-			result.add(new User(splitData[0], splitData[1], Integer.parseInt(splitData[0])));
+			result.add(new User(splitData[0], splitData[1], Integer.parseInt(splitData[2])));
 		}
 		
-		return result;
-	}
-	
-	public ArrayList<User> modelToUser(ArrayList<String> dataUser){
-		
-		ArrayList<Model> modelUser = this.stringToObject(dataUser);
-		ArrayList<User> userList = new ArrayList<User>();
-		
-		for (Model model : modelUser) {
-			userList.add((User)model);
-		}
-		
-		return userList;
-	}
-
-	public Model findOne(Connection conn) {
-//		this.userData = (User) stringToObject()
-				
-		
-		return null;
+		this.userList = result;
+		return;
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class Main {
 		if(inp.equals(1)) {
 			insertMenu();
 		}else if(inp.equals(2)) {
-			showMenu();
+//			showMenu();
 		}else if(inp.equals(3)) {
 			System.exit(0);
 		}else {
