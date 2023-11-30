@@ -30,7 +30,7 @@ public class Connection {
 			}
 		}else if(option.equals("Team")) {
 			try {
-				file = new FileWriter("team.csv", true);
+				file = new FileWriter("teams.csv", true);
 				print = new PrintWriter(file, true);
 				
 				print.println(insert);
