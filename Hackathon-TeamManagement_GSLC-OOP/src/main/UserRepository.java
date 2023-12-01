@@ -11,10 +11,13 @@ public class UserRepository implements Repository{
 		
 		for (String user : dataUser) {
 			String[] splitData = user.split(",");
-			result.add(new User(splitData[0], splitData[1], Integer.parseInt(splitData[2])));
+			result.add(new User(splitData[1], splitData[0], Integer.parseInt(splitData[2])));
 		}
 		
 		this.userList = result;
+//		for (User user : result) {
+//			System.out.println(user.userNim);
+//		}
 		return;
 	}
 	
