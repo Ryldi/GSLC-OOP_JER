@@ -13,9 +13,11 @@ public class Main {
 	public Main() {
 		mainMenu();
 		
+		
 	}
 	
 	public void mainMenu() {
+		System.out.println();
 		System.out.println("-----Main Menu-----");
 		System.out.println("1. Insert Data");
 		System.out.println("2. Show Data");
@@ -35,7 +37,7 @@ public class Main {
 	}
 	
 	private void showMenu() {
-		System.out.println("");
+		System.out.println();
 		System.out.println("---Show---");
 		System.out.println("Which table to show?");
 		System.out.println("1. User");
@@ -50,24 +52,40 @@ public class Main {
 		Integer cond = scan.nextInt(); scan.nextLine();
 		
 		if(inp.equals(1)) {
-			if(cond.equals(1)) { // show user
-				System.out.println("add condition, separate by semicolon");
-				
-			}else if(cond.equals(2)) {
-				
-			}else mainMenu();
+			showUser(cond);
 		}else if(inp.equals(2)) { // show team
 			showTeam(cond);
 		}
 		
 	}
 	
+	public void showUser(Integer condition) {
+		UserRepository userRepo = new UserRepository();
+		
+		
+		if(condition.equals(1)) { //ada kondisi (id/name, cond, join)
+			
+			System.out.println("add condition, separate by semicolon");
+			String con = scan.nextLine();
+			String[] sepCon = con.split(";");
+			System.out.print("Join table with table Team? [y/n]: ");
+			String join = scan.next();
+			String[] pass = new String[] {sepCon[1], sepCon[2]};
+			
+			if(join.equals("y")) {
+				userRepo.find(sepCon[0], pass , true, "Team", conn);
+			}else if(join.equals("n")) {
+				userRepo.find(sepCon[0], pass , false, null, conn);
+			}
+			
+		}else if(condition.equals(2)) {
+			userRepo.find(null, null, false, null, conn);
+		}
+		mainMenu();
+	}
+	
 	public void showTeam(Integer condition) {
-		TeamRepository teamRepo = new TeamRepository();
-		
-//		
-//		teamRepo.find("id", pass , true, "User", conn);
-		
+		TeamRepository teamRepo = new TeamRepository();		
 		
 		if(condition.equals(1)) { //ada kondisi (id/name, cond, join)
 			
@@ -86,7 +104,8 @@ public class Main {
 			
 		}else if(condition.equals(2)) {
 			teamRepo.find(null, null, false, null, conn);
-		}else mainMenu();
+		}
+		mainMenu();
 	}
 
 	public void insertMenu() {
@@ -117,15 +136,29 @@ public class Main {
 		userName = scan.nextLine();
 		System.out.println("Add Nim: ");
 		userNim = scan.nextLine();
-		System.out.println("Add Team Name: ");
+		System.out.println("Add Team: ");
 		teamName = scan.nextLine();
+		
+		UserRepository addUser = new UserRepository();
+		
+//    	userRepository.insert([”user1”,”2600150125”,”Team1”],conn);
+		
+		String[] passNewUser = new String[]{userName, userNim, teamName}; 
+		addUser.insert(passNewUser, conn);
+		
+		mainMenu();
 	}
 	
 	public void insertTeam() {
-		String teamName;
-		
+				
 		System.out.print("Add Team Name: ");
-		teamName = scan.nextLine();
+		String[] teamName = new String[] {scan.nextLine()};
+		
+		TeamRepository addTeam = new TeamRepository();
+		
+		addTeam.insert(teamName, conn);
+		
+		mainMenu();
 	}
 	
 }

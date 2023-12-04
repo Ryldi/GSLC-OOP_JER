@@ -32,7 +32,7 @@ public class TeamRepository implements Repository{
 		if(condition[0].equals("=")) return 1;
 		return 0;
 	}
-	
+	 
 	public ArrayList<Team> filterTeam(String col, String[] condition){
 		ArrayList<Team> answer = new ArrayList<Team>();
 		
@@ -72,8 +72,8 @@ public class TeamRepository implements Repository{
 				teamMember.add(new ArrayList<User>());
 			}
 			this.teamMember.get(idTeam).add(userNow);
-			
 		}	
+		
 	}
 
 	public Boolean validate(String col, String[] condition, Boolean join, String tableJoin, Connection conn){
@@ -82,14 +82,11 @@ public class TeamRepository implements Repository{
 		// hubungan antara col dengan condition
         if(col == null && condition != null) return false;
         if(col != null && condition == null) return false;
-        if( (col.equals("id") || col.equals("name")) == false)return false;
-        
 
         // untuk condition jika ada
         if(condition != null && condition.length !=2)return false;
         if(condition != null && (condition[0] == null || condition[1] == null))return false;
         
-        // kalau ga join gabisa output
         // join
         if(join == false && tableJoin != null)return false;
         if(join == true && tableJoin == null)return false;
@@ -155,20 +152,42 @@ public class TeamRepository implements Repository{
         return;
     }
 
-	public void findOne(String col, String[] condition, Boolean join, String tableJoin, Connection conn) {
-		// TODO Auto-generated method stub
-	    if(validate(col, condition, false, null, conn).equals(false))return;
+	public Team findOne(String col, String[] condition, Boolean join, String tableJoin, Connection conn) {
+//		if(validate(col, condition, false, null, conn).equals(false))return null;
 	    this.getDataTeam(conn);
 	    ArrayList<Team> teamAnswer = filterTeam(col, condition);
-	    if(teamAnswer.size() == 0) return;
-
-		System.out.println("ID| Team Name ");
-		System.out.println("------------------");
-
-		System.out.print(teamAnswer.get(0).teamID);
-		System.out.print(" | " + teamAnswer.get(0).teamName);
-		System.out.println();
+	    if(teamAnswer.size() == 0) return null;
 	    
+	    Team teamResult = teamAnswer.get(0);
+	    return teamResult;
+	}
+	
+	public void insert(String[] teamName, Connection conn) {
+		String[] pass = new String[]{"=", teamName[0]};
+		
+		
+		try {
+			Team find = findOne("name", pass, false, null, conn);
+			if(find.teamName.equals(teamName[0])) {
+				System.out.println("Team name is already been used, choose another one.");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			Integer max = 0;
+			
+			for (Team team : teamList) {
+				if(team.teamID > max) {
+					max = team.teamID;
+				}
+			}
+			
+			Integer newTeamID = max+1;
+			String newTeamData = newTeamID.toString()+","+ teamName[0];
+			conn.writeFile("Team", newTeamData);
+			
+			System.out.println("New Team has been registered.");
+		}
+		
 	}
 
 }
