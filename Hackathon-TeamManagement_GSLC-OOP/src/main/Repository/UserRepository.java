@@ -1,12 +1,16 @@
-package main;
-
+package main.Repository;
+//package main.Models;
 
 import java.util.ArrayList;
 
-public class UserRepository implements Repository{
+import main.Connection;
+import main.Models.Team;
+import main.Models.User;
+
+public class UserRepository implements Repository {
 	
-	ArrayList<User> userList = new ArrayList<User>();
-	ArrayList<String> teamInfo = new ArrayList<String>();
+	public ArrayList<User> userList = new ArrayList<User>();
+	public ArrayList<String> teamInfo = new ArrayList<String>();
 	
 	public void stringToObject(ArrayList<String> dataUser) {
 		ArrayList<User> result = new ArrayList<User>();
@@ -88,40 +92,60 @@ public class UserRepository implements Repository{
 		// hubungan antara col dengan condition
         if(col == null && condition != null) return false;
         if(col != null && condition == null) return false;
-        
+		if(col != null &&  (col.equals("id") || col.equals("name") || col.equals("nim")) == false)return false;
 
         // untuk condition jika ada
-        if(condition != null && condition.length !=2)return false;
-        if(condition != null && (condition[0] == null || condition[1] == null))return false;
-        
+		if(condition != null){
+			if(condition.length !=2)return false;
+			if(condition[0] == null || condition[1] == null)return false;
+			if((condition[0].equals("=") || condition[0].equals("!=")) == false)return false;
+		}
+
         // kalau ga join gabisa output
         // join
         if(join == false && tableJoin != null)return false;
-        if(join == true && tableJoin == null)return false;
-        if((join == true && tableJoin.equals("Team")) == false)return false;
-        
+		if(join == true){
+			if(tableJoin == null)return false;
+			if(tableJoin.equals("Team") == false)return false;
+		}
 
         if(conn == null)return false;
-
-        // col
-        if( (col.equals("id") || col.equals("name") || col.equals("nim")) == false)return false;
-        
         return true;
     }
 
     public void find(String col, String[] condition, Boolean join, String tableJoin, Connection conn) {
-        
+        if(validate(col, condition, join, tableJoin, conn).equals(false)){
+			System.out.println("error [wrong condition/parameter]");
+			return;
+		}
+
         this.getDataUser(conn);
         this.getTeamInfo(conn);
 		
 		if(condition == null) {
-			System.out.println("ID| User NIM   | User Name");
-			System.out.println("-----------------------------");
-			for (User user : userList) {
-				System.out.print(user.teamID);
-				System.out.print(" | " + user.userNim);
-				System.out.print(" | " + user.userName);
-				System.out.println();
+			if(join.equals(false)){
+				System.out.println("ID| User NIM   | User Name");
+				System.out.println("-----------------------------");
+				for (User user : userList) {
+					System.out.print(user.teamID);
+					System.out.print(" | " + user.userNim);
+					System.out.print(" | " + user.userName);
+					System.out.println();
+				}
+			}else{
+				User user_now = new User(null, null, null);
+				for(int i=0; i < userList.size(); i++){
+					user_now = userList.get(i);
+					if(i==0) {
+						System.out.println("ID| User NIM   | User Name   | Team Name");
+						System.out.println("-----------------------------------------------");
+					}
+					System.out.print(user_now.teamID);
+					System.out.print(" | " + user_now.userNim);
+					System.out.print(" | " + user_now.userName);
+					System.out.print(" | " + teamInfo.get(user_now.teamID));
+					System.out.println();
+				}
 			}
 		}
 		else if(condition != null){
@@ -156,7 +180,11 @@ public class UserRepository implements Repository{
     }
 
     public User findOne(String col, String[] condition, Boolean join, String tableJoin, Connection conn) {
-		if(validate(col, condition, false, null, conn).equals(false))return null;
+		if(validate(col, condition, join, tableJoin, conn).equals(false)){
+			System.out.println("error kondisi salah");
+			return null;
+		}
+
 	    this.getDataUser(conn);
 	    ArrayList<User> userAnswer = filterUser(col, condition);
 	    if(userAnswer.size() == 0) return null;

@@ -1,7 +1,8 @@
-package main;
+package main.Models;
 
-public class Team extends Model{
-	String teamName;
+
+public class Team extends Model {
+	public String teamName;
 	
 	public Team(Integer teamID, String teamName) {
 		super(teamID);

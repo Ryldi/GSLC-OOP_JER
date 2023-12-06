@@ -1,8 +1,9 @@
-package main;
+package main.Models;
 
-public class User extends Model{
-	String userName;
-	String userNim;
+
+public class User extends Model {
+	public String userName;
+	public String userNim;
 	
 	public User(String userName, String userNim, Integer teamID) {
 		super(teamID);

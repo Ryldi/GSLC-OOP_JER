@@ -1,4 +1,6 @@
-package main;
+package main.Repository;
+
+import main.Connection;
 
 import java.util.ArrayList;
 

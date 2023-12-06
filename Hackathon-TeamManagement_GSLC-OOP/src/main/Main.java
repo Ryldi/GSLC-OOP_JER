@@ -1,10 +1,14 @@
 package main;
 
+import main.Repository.TeamRepository;
+import main.Repository.UserRepository;
+
 import java.util.Scanner;
 
 public class Main {
 	Scanner scan = new Scanner(System.in);
 	Connection conn = new Connection();
+
 
 	public static void main(String[] args) {
 		new Main();
@@ -79,13 +83,20 @@ public class Main {
 			}
 			
 		}else if(condition.equals(2)) {
-			userRepo.find(null, null, false, null, conn);
+			System.out.print("Join table with table Team? [y/n]: ");
+			String join = scan.next();
+
+			if(join.equals("y")) {
+				userRepo.find(null, null, true, "Team", conn);
+			}else if(join.equals("n")) {
+				userRepo.find(null, null, false, null, conn);
+			}
 		}
 		mainMenu();
 	}
 	
 	public void showTeam(Integer condition) {
-		TeamRepository teamRepo = new TeamRepository();		
+		TeamRepository teamRepo = new TeamRepository();
 		
 		if(condition.equals(1)) { //ada kondisi (id/name, cond, join)
 			
@@ -103,7 +114,14 @@ public class Main {
 			}
 			
 		}else if(condition.equals(2)) {
-			teamRepo.find(null, null, false, null, conn);
+			System.out.print("Join table with table Team? [y/n]: ");
+			String join = scan.next();
+
+			if(join.equals("y")) {
+				teamRepo.find(null, null, true, "User", conn);
+			}else if(join.equals("n")) {
+				teamRepo.find(null, null, false, null, conn);
+			}
 		}
 		mainMenu();
 	}

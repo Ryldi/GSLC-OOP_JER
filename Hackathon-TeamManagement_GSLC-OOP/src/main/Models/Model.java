@@ -1,7 +1,7 @@
-package main;
+package main.Models;
 
 public abstract class Model {
-	Integer teamID;
+	public Integer teamID;
 	
 	public Model(Integer teamID) {
 		this.teamID = teamID;

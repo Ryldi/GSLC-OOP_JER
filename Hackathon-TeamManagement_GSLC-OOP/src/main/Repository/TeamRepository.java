@@ -1,11 +1,15 @@
-package main;
+package main.Repository;
+
+import main.Connection;
+import main.Models.Team;
+import main.Models.User;
 
 import java.util.ArrayList;
 
-public class TeamRepository implements Repository{
+public class TeamRepository implements Repository {
 	
-	ArrayList<Team> teamList = new ArrayList<Team>();
-	ArrayList<ArrayList<User>> teamMember = new ArrayList<ArrayList<User>>();
+	public ArrayList<Team> teamList = new ArrayList<Team>();
+	public ArrayList<ArrayList<User>> teamMember = new ArrayList<ArrayList<User>>();
 
 	public void stringToObject(ArrayList<String> dataTeam) {
 		ArrayList<Team> result = new ArrayList<Team>();
@@ -78,41 +82,69 @@ public class TeamRepository implements Repository{
 
 	public Boolean validate(String col, String[] condition, Boolean join, String tableJoin, Connection conn){
 		//teamRepo.find("Nama", pass , false, null, conn);
-		
+
 		// hubungan antara col dengan condition
-        if(col == null && condition != null) return false;
-        if(col != null && condition == null) return false;
+		if(col == null && condition != null) return false;
+		if(col != null && condition == null) return false;
+		if(col != null &&  (col.equals("id") || col.equals("name")) == false)return false;
 
-        // untuk condition jika ada
-        if(condition != null && condition.length !=2)return false;
-        if(condition != null && (condition[0] == null || condition[1] == null))return false;
-        
-        // join
-        if(join == false && tableJoin != null)return false;
-        if(join == true && tableJoin == null)return false;
-        if((join == true && tableJoin.equals("User")) == false)return false;
-        
+		// untuk condition jika ada
+		if(condition != null){
+			if(condition.length !=2)return false;
+			if(condition[0] == null || condition[1] == null)return false;
+			if((condition[0].equals("=") || condition[0].equals("!=")) == false)return false;
+		}
 
-        if(conn == null)return false;
+		// kalau ga join gabisa output
+		// join
+		if(join == false && tableJoin != null)return false;
+		if(join == true){
+			if(tableJoin == null)return false;
+			if(tableJoin.equals("User") == false)return false;
+		}
 
-        // col
-        if( (col.equals("id") || col.equals("name")) == false)return false;
-        
-        return true;
-    }
+		if(conn == null)return false;
+		return true;
+	}
 
     public void find(String col, String[] condition, Boolean join, String tableJoin, Connection conn) {
-        
+		if(validate(col, condition, join, tableJoin, conn).equals(false)){
+			System.out.println("error [wrong condition/parameter]");
+			return;
+		}
+
         this.getDataTeam(conn);
         
 		
 		if(condition == null) {
-			System.out.println("ID| Team Name");
-			System.out.println("------------------");
-			for (Team team : teamList) {
-				System.out.print(team.teamID);
-				System.out.print(" | " + team.teamName);
-				System.out.println();
+			if(join.equals(false)){
+				System.out.println("ID| Team Name");
+				System.out.println("------------------");
+				for (Team team : teamList) {
+					System.out.print(team.teamID);
+					System.out.print(" | " + team.teamName);
+					System.out.println();
+				}
+			}else{
+				Team team_now = new Team(null, null);
+				fillTeamMember(conn);
+				for(int i=0; i < teamList.size(); i++){
+					team_now = new Team(null, null);
+					team_now = teamList.get(i);
+					User user_now = new User(null, null, null);
+					if(i==0) {
+						System.out.println("ID| User NIM   | Team Name   | User Name");
+						System.out.println("-----------------------------------------------");
+					}
+					for(int j = 0; j < teamMember.get(team_now.teamID).size(); j++){
+						user_now = teamMember.get(team_now.teamID).get(j);
+						System.out.print(team_now.teamID);
+						System.out.print(" | " + user_now.userNim);
+						System.out.print(" | " + team_now.teamName);
+						System.out.print(" | " + user_now.userName);
+						System.out.println();
+					}
+				}
 			}
 		}
 		else if(condition != null){
