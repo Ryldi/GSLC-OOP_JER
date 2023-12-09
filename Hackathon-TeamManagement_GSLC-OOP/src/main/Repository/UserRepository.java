@@ -38,11 +38,11 @@ public class UserRepository implements Repository {
 				teamInfo.add(new String());
 			}
 			this.teamInfo.add(idTeam, splitData[1]);
-		} 
-		
-		for (int i = 0; i < teamInfo.size(); i++) {
-			System.out.println(teamInfo.get(i));
 		}
+
+//		for (int i = 0; i < teamInfo.size(); i++) {
+//			System.out.println(teamInfo.get(i));
+//		}
 		
 	}
 	
@@ -79,9 +79,6 @@ public class UserRepository implements Repository {
 				answer.add(user);
 			}
 		}
-//		for (Team team : answer) {
-//			System.out.println(team.teamName);
-//		}
 		
 		return answer;
 	}
@@ -121,7 +118,6 @@ public class UserRepository implements Repository {
 
         this.getDataUser(conn);
         this.getTeamInfo(conn);
-		
 		if(condition == null) {
 			if(join.equals(false)){
 				System.out.println("ID| User NIM   | User Name");
@@ -155,7 +151,7 @@ public class UserRepository implements Repository {
 			for(int i = 0; i < userAnswer.size(); i++){
 				user_now = userAnswer.get(i);
 //				// keluarin data semua user yg ada di team ini kalau table join
-				if(validate(col, condition, join, tableJoin, conn).equals(true)) {
+				if(join == true && validate(col, condition, join, tableJoin, conn).equals(true)) {
 					if(i==0) {
 						System.out.println("ID| User NIM   | User Name   | Team Name");
 						System.out.println("-----------------------------------------------");
@@ -171,6 +167,7 @@ public class UserRepository implements Repository {
 						System.out.println("------------------------------");
 					}
 					System.out.print(user_now.teamID);
+					System.out.print(" | " + user_now.userNim);
 					System.out.print(" | " + user_now.userName);
 					System.out.println();
 				}	

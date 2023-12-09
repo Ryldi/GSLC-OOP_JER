@@ -67,16 +67,16 @@ public class TeamRepository implements Repository {
 		
 		ArrayList<User> userList = user.userList;
 
+		while (teamMember.size() <= teamList.size()) {
+			teamMember.add(new ArrayList<User>());
+		}
+
 		for (User users : userList) {
 			User userNow = new User(null,null,null);
 			userNow = users;
 			int idTeam = userNow.teamID;
-		
-			while (teamMember.size() <= idTeam) {
-				teamMember.add(new ArrayList<User>());
-			}
 			this.teamMember.get(idTeam).add(userNow);
-		}	
+		}
 		
 	}
 
@@ -157,7 +157,7 @@ public class TeamRepository implements Repository {
 				team_now = teamAnswer.get(i);
 				User user_now = new User(null, null, null);
 //				// keluarin data semua user yg ada di team ini kalau table join
-				if(validate(col, condition, join, tableJoin, conn).equals(true)) {
+				if(join == true && validate(col, condition, join, tableJoin, conn).equals(true)) {
 					if(i==0) {
 						System.out.println("ID| User NIM   | Team Name   | User Name");
 						System.out.println("-----------------------------------------------");

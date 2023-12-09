@@ -70,6 +70,7 @@ public class Main {
 		if(condition.equals(1)) { //ada kondisi (id/name, cond, join)
 			
 			System.out.println("add condition, separate by semicolon");
+			System.out.println("format: [name or id or nim];[= or !=];[value]");
 			String con = scan.nextLine();
 			String[] sepCon = con.split(";");
 			System.out.print("Join table with table Team? [y/n]: ");
@@ -101,6 +102,7 @@ public class Main {
 		if(condition.equals(1)) { //ada kondisi (id/name, cond, join)
 			
 			System.out.println("add condition, separate by semicolon");
+			System.out.println("format: [name or id];[= or !=];[value]");
 			String con = scan.nextLine();
 			String[] sepCon = con.split(";");
 			System.out.print("Join table with table User? [y/n]: ");
